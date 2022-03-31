@@ -41,7 +41,6 @@ public class GeoDataHandler {
                     default:
                         throw new IllegalStateException("Unexpected value: " + longitude.get("orientation"));
                 }
-
                 positions.add(new GeoPosition(
                         new Latitude(latitudinalOrientation,
                                 (short) latitude.getInt("degree"),
