@@ -12,12 +12,11 @@ public class Start {
 
         List<GeoPosition> list = new ArrayList();
 
-        list.add(new GeoPosition("N50°23'34\"E127°33'23\""));
-        list.add(new GeoPosition("S78°58'37\"E90°42'12\""));
+        list.add(new GeoPosition("N120°45\\.50'E19°12\\.65'"));
 
-        //GeoDataHandler.write(file, list);
-
-        //list = GeoDataHandler.read(file);
+//        GeoDataHandler.write(file, list);
+//
+//        list = GeoDataHandler.read(file);
 
         for (GeoPosition pos :list) {
             System.out.println(pos);
