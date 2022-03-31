@@ -7,7 +7,6 @@ public class Latitude extends GeoData{
     public Latitude(LatitudinalOrientation latitudinalOrientation, short degree, byte minute, byte second){
         super(degree, minute, second);
         this.orientation = latitudinalOrientation;
-
     }
 
     public LatitudinalOrientation getOrientation() {

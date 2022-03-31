@@ -1,7 +1,5 @@
 package application;
 
-import org.json.JSONObject;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ public class Start {
 
         //GeoDataHandler.write(file, list);
 
-        list = GeoDataHandler.read(file);
+        //list = GeoDataHandler.read(file);
 
         for (GeoPosition pos :list) {
             System.out.println(pos);

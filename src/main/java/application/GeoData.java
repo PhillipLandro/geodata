@@ -1,17 +1,17 @@
 package application;
 
-public class GeoData {
+public abstract class GeoData {
 
-    private short degree;
+    protected short degree;
 
-    private byte minute;
+    protected byte minute;
 
-    private byte second;
+    protected byte second;
 
     public GeoData(short degree, byte minute, byte second){
-        this.degree = degree;
-        this.minute = minute;
-        this.second = second;
+        setDegree(degree);
+        setMinute(minute);
+        setSecond(second);
     }
 
     public byte getSecond() {

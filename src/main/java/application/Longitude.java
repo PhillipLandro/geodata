@@ -4,9 +4,9 @@ public class Longitude extends GeoData{
 
     LongitudinalOrientation orientation;
 
-    public Longitude(LongitudinalOrientation longitudinalOrientation, short degree, byte minute, byte second){
+    public Longitude(LongitudinalOrientation longitudinalOrientation, short degree, byte minute, byte second) {
         super(degree, minute, second);
-        this.orientation = longitudinalOrientation;
+        setOrientation(longitudinalOrientation);
     }
 
     public LongitudinalOrientation getOrientation() {
