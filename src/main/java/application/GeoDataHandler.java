@@ -44,12 +44,12 @@ public class GeoDataHandler {
         JSONObject latitude = new JSONObject(json.get("latitude").toString());
         JSONObject longitude = new JSONObject(json.get("longitude").toString());
 
-        LatitudinalOrientation latitudinalOrientation = latitude.get("orientation").toString() == "NORTH" ? LatitudinalOrientation.NORTH
-                                                        : latitude.get("orientation").toString() == "SOUTH" ? LatitudinalOrientation.SOUTH
+        LatitudinalOrientation latitudinalOrientation = latitude.get("orientation").toString().equals("NORTH") ? LatitudinalOrientation.NORTH
+                                                        : latitude.get("orientation").toString().equals("SOUTH") ? LatitudinalOrientation.SOUTH
                                                         : null;
 
-        LongitudinalOrientation longitudinalOrientation = longitude.get("orientation").toString() == "EAST" ? LongitudinalOrientation.EAST
-                                                        : longitude.get("orientation").toString() == "WEST" ? LongitudinalOrientation.WEST
+        LongitudinalOrientation longitudinalOrientation = longitude.get("orientation").toString().equals("EAST") ? LongitudinalOrientation.EAST
+                                                        : longitude.get("orientation").toString().equals("WEST") ? LongitudinalOrientation.WEST
                                                         : null;
 
         return new GeoPosition(

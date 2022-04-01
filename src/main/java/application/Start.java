@@ -10,14 +10,12 @@ public class Start {
 
     public static void main(String[] args){
 
-        System.out.println("N120°40'30\"E19°12'34\"".matches(GeoPosition.REGEX_WITH_DECIMALS));
-
         File file = new File("data.json");
 
         List<GeoPosition> list = new ArrayList();
 
-        list.add(new GeoPosition("N120°40'30\"E19°12'34\""));
-        list.add(new GeoPosition("N126°59\\.55555'E29°32\\.85'"));
+        list.add(new GeoPosition("N90°40'30\"E19°12'34\""));
+        list.add(new GeoPosition("N90°35.5'W29°33.8'"));
 
         GeoDataHandler.write(file, list);
 

@@ -1,10 +1,12 @@
 package application;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Longitude extends GeoData{
 
     LongitudinalOrientation orientation;
 
-    public Longitude(LongitudinalOrientation longitudinalOrientation, short degree, byte minute, byte second) {
+    public Longitude(@NotNull LongitudinalOrientation longitudinalOrientation, short degree, byte minute, byte second) {
         super(degree, minute, second);
         setOrientation(longitudinalOrientation);
     }

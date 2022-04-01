@@ -1,24 +1,29 @@
 package application;
 
-import java.util.InputMismatchException;
+import org.jetbrains.annotations.NotNull;
 
 public class GeoPosition {
 
-    public static final String REGEX_WITH_DECIMALS = "[NS]+[1]?[0-9]?[1-9]+°[0-5]?[0-9]+'[0-5]+[0-9]+\"[EW]+[1]?[0-9]?[1-9]+°[0-5]?[0-9]+'[0-5]+[0-9]+\"";
+    public static final String FORMAT_MINUTE_SECONDS = "[N,S]\\d{1,3}°\\d\\d?'\\d\\d?\"[E,W]\\d{1,3}°\\d\\d?'\\d\\d?\"";
+    public static final String FORMAT_MINUTE_WITH_DECIMALS = "[N,S]\\d{1,3}°\\d\\d?.\\d\\d?'[E,W]\\d{1,3}°\\d\\d?.\\d?'";
 
     Latitude latitude;
     Longitude longitude;
 
     public GeoPosition(String geoPos){
         try{
-            if(geoPos.contains("\\.")){
+            if(geoPos.matches(FORMAT_MINUTE_SECONDS)){
+                parseDegreeMinuteSecond(geoPos);
+            }
+            else if(geoPos.matches(FORMAT_MINUTE_WITH_DECIMALS)){
                 parseDegreeMinuteWithDecimals(geoPos);
-            } else parseDegreeMinuteSecond(geoPos);
+            } else throw new IllegalArgumentException("No legal GeoPosition String");
         }catch(Exception e){
-            e.printStackTrace();
+           e.printStackTrace();
         }
 
     }
+
 
     public GeoPosition(Latitude latitude, Longitude longitude) {
         this.latitude = latitude;
@@ -75,7 +80,7 @@ public class GeoPosition {
                 : null;
 
         LongitudinalOrientation lon = splitted[3].charAt(0) == 'E' ? LongitudinalOrientation.EAST
-                : splitted[3].charAt(0) == 'S' ? LongitudinalOrientation.WEST
+                : splitted[3].charAt(0) == 'W' ? LongitudinalOrientation.WEST
                 : null;
 
         if(lat != null && lon != null){
