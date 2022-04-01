@@ -1,5 +1,7 @@
 package application;
 
+import com.google.gson.Gson;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -12,45 +14,14 @@ public class GeoDataHandler {
     public GeoDataHandler(){}
 
     public static List<GeoPosition> read(File file){
-        LongitudinalOrientation longitudinalOrientation;
-        LatitudinalOrientation latitudinalOrientation;
         List<GeoPosition> positions = new ArrayList<>();
         String zeile = "";
         try(BufferedReader reader = Files.newBufferedReader(file.toPath())) {
-            while((zeile = reader.readLine()) != null){
-                JSONObject object = new JSONObject(zeile);
-                JSONObject latitude = new JSONObject(object.get("latitude").toString());
-                JSONObject longitude = new JSONObject(object.get("longitude").toString());
-                switch (longitude.get("orientation").toString()){
-                    case("EAST"):
-                        longitudinalOrientation = LongitudinalOrientation.EAST;
-                        break;
-                    case("WEST"):
-                        longitudinalOrientation = LongitudinalOrientation.WEST;
-                        break;
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + longitude.get("orientation"));
+            if((zeile = reader.readLine()) != null){
+                JSONArray json = new JSONArray(zeile);
+                for (Object j: json) {
+                    positions.add(jsonToGeoPosition(new JSONObject(j.toString())));
                 }
-                switch (latitude.get("orientation").toString()){
-                    case("SOUTH"):
-                        latitudinalOrientation = LatitudinalOrientation.SOUTH;
-                        break;
-                    case("NORTH"):
-                        latitudinalOrientation = LatitudinalOrientation.NORTH;
-                        break;
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + longitude.get("orientation"));
-                }
-                positions.add(new GeoPosition(
-                        new Latitude(latitudinalOrientation,
-                                (short) latitude.getInt("degree"),
-                                (byte)latitude.getInt("minute"),
-                                (byte)latitude.getInt("second")),
-                        new Longitude(longitudinalOrientation,
-                                (short) longitude.getInt("degree"),
-                                (byte) longitude.getInt("minute"),
-                                (byte) longitude.getInt("second")))
-                );
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,14 +30,51 @@ public class GeoDataHandler {
     }
 
     public static void write(File file, List<GeoPosition> list){
-        for(GeoPosition position: list){
-            try(FileWriter writer = new FileWriter(file, true)) {
-                JSONObject object = new JSONObject(position);
-                writer.write(object.toString() + "\n");
+            try(FileWriter writer = new FileWriter(file)) {
+                Gson gson = new Gson();
+                String s = gson.toJson(list);
+                writer.write(s);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
     }
+
+    private static GeoPosition jsonToGeoPosition(JSONObject json){
+        LongitudinalOrientation longitudinalOrientation;
+        LatitudinalOrientation latitudinalOrientation;
+        JSONObject latitude = new JSONObject(json.get("latitude").toString());
+        JSONObject longitude = new JSONObject(json.get("longitude").toString());
+        switch (longitude.get("orientation").toString()){
+            case("EAST"):
+                longitudinalOrientation = LongitudinalOrientation.EAST;
+                break;
+            case("WEST"):
+                longitudinalOrientation = LongitudinalOrientation.WEST;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + longitude.get("orientation"));
+        }
+        switch (latitude.get("orientation").toString()){
+            case("SOUTH"):
+                latitudinalOrientation = LatitudinalOrientation.SOUTH;
+                break;
+            case("NORTH"):
+                latitudinalOrientation = LatitudinalOrientation.NORTH;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + longitude.get("orientation"));
+        }
+        return new GeoPosition(
+                new Latitude(latitudinalOrientation,
+                        (short) latitude.getInt("degree"),
+                        (byte)latitude.getInt("minute"),
+                        (byte)latitude.getInt("second")),
+                new Longitude(longitudinalOrientation,
+                        (short) longitude.getInt("degree"),
+                        (byte) longitude.getInt("minute"),
+                        (byte) longitude.getInt("second")));
+    }
+
+
 
 }
