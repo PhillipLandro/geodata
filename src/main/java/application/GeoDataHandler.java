@@ -40,30 +40,18 @@ public class GeoDataHandler {
     }
 
     private static GeoPosition jsonToGeoPosition(JSONObject json){
-        LongitudinalOrientation longitudinalOrientation;
-        LatitudinalOrientation latitudinalOrientation;
+
         JSONObject latitude = new JSONObject(json.get("latitude").toString());
         JSONObject longitude = new JSONObject(json.get("longitude").toString());
-        switch (longitude.get("orientation").toString()){
-            case("EAST"):
-                longitudinalOrientation = LongitudinalOrientation.EAST;
-                break;
-            case("WEST"):
-                longitudinalOrientation = LongitudinalOrientation.WEST;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + longitude.get("orientation"));
-        }
-        switch (latitude.get("orientation").toString()){
-            case("SOUTH"):
-                latitudinalOrientation = LatitudinalOrientation.SOUTH;
-                break;
-            case("NORTH"):
-                latitudinalOrientation = LatitudinalOrientation.NORTH;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + longitude.get("orientation"));
-        }
+
+        LatitudinalOrientation latitudinalOrientation = latitude.get("orientation").toString() == "NORTH" ? LatitudinalOrientation.NORTH
+                                                        : latitude.get("orientation").toString() == "SOUTH" ? LatitudinalOrientation.SOUTH
+                                                        : null;
+
+        LongitudinalOrientation longitudinalOrientation = longitude.get("orientation").toString() == "EAST" ? LongitudinalOrientation.EAST
+                                                        : longitude.get("orientation").toString() == "WEST" ? LongitudinalOrientation.WEST
+                                                        : null;
+
         return new GeoPosition(
                 new Latitude(latitudinalOrientation,
                         (short) latitude.getInt("degree"),

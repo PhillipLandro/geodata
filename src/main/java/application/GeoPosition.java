@@ -4,15 +4,20 @@ import java.util.InputMismatchException;
 
 public class GeoPosition {
 
-    Latitude latitude;
+    public static final String REGEX_WITH_DECIMALS = "[NS]+[1]?[0-9]?[1-9]+°[0-5]?[0-9]+'[0-5]+[0-9]+\"[EW]+[1]?[0-9]?[1-9]+°[0-5]?[0-9]+'[0-5]+[0-9]+\"";
 
+    Latitude latitude;
     Longitude longitude;
 
-
     public GeoPosition(String geoPos){
-        if(geoPos.contains("\\.")){
-            parseDegreeMinuteWithDecimals(geoPos);
-        } else parseDegreeMinuteSecond(geoPos);
+        try{
+            if(geoPos.contains("\\.")){
+                parseDegreeMinuteWithDecimals(geoPos);
+            } else parseDegreeMinuteSecond(geoPos);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public GeoPosition(Latitude latitude, Longitude longitude) {
@@ -51,7 +56,7 @@ public class GeoPosition {
             } catch (Exception e){
                 e.printStackTrace();
             }
-        } else System.out.println("Ungültige Eingabe");
+        } else throw new IllegalArgumentException();
 
     }
 
@@ -88,7 +93,7 @@ public class GeoPosition {
             } catch (Exception e){
                 e.printStackTrace();
             }
-        } else System.out.println("Ungültige Eingabe");
+        } else throw new IllegalArgumentException();;
     }
 
     public Longitude getLongitude() {
