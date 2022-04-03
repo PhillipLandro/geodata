@@ -45,7 +45,7 @@ public class GeoPosition {
                                     : null;
 
         LongitudinalOrientation lon = splitted[3].charAt(0) == 'E' ? LongitudinalOrientation.EAST
-                                    : splitted[3].charAt(0) == 'S' ? LongitudinalOrientation.WEST
+                                    : splitted[3].charAt(0) == 'W' ? LongitudinalOrientation.WEST
                                     : null;
 
         if(lat != null && lon != null){
@@ -54,7 +54,7 @@ public class GeoPosition {
                         (short)Integer.parseInt(splitted[0].substring(1)), // degree
                         (byte)Integer.parseInt(splitted[1]), // minutes
                         (byte)Integer.parseInt(splitted[2])); // seconds
-                this.longitude = new Longitude(LongitudinalOrientation.WEST,
+                this.longitude = new Longitude(lon,
                         (short)Integer.parseInt(splitted[3].substring(1)),
                         (byte)Integer.parseInt(splitted[4]),
                         (byte)Integer.parseInt(splitted[5]));
@@ -91,14 +91,14 @@ public class GeoPosition {
                         (byte)Integer.parseInt(splitted[1].substring(0, 2)), // minutes
                         seconds); // seconds
                 seconds = (byte)(Double.parseDouble(0 + "." + splitted[5]) * 60);
-                this.longitude = new Longitude(LongitudinalOrientation.WEST,
+                this.longitude = new Longitude(lon,
                         (short)Integer.parseInt(splitted[3].substring(1)),
                         (byte)Integer.parseInt(splitted[4].substring(0, 2)),
                         seconds);
             } catch (Exception e){
                 e.printStackTrace();
             }
-        } else throw new IllegalArgumentException();;
+        } else throw new IllegalArgumentException();
     }
 
     public Longitude getLongitude() {

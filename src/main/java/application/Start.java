@@ -15,7 +15,7 @@ public class Start {
         List<GeoPosition> list = new ArrayList();
 
         list.add(new GeoPosition("N90°40'30\"E19°12'34\""));
-        list.add(new GeoPosition("N90°35.5'W29°33.8'"));
+        list.add(new GeoPosition("S90°35.5'W29°33.8'"));
 
         GeoDataHandler.write(file, list);
 
